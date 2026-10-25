@@ -6,6 +6,10 @@
 
 This project uses a profile-based workshop structure.
 
+## Actual runtime
+
+The `workflow-python` template bootstrapped the repository. The product is a native Pebble C watchapp in `watchapp/src/c/` with a small PebbleKit JS phone bridge in `watchapp/src/pkjs/`. `execution/build.py` is the deterministic build wrapper. Use `make test` and `make build`; do not assume this is a Python application.
+
 ## Project-Specific Contract Steps
 
 In addition to the workspace-level Contract, before acting on this project:

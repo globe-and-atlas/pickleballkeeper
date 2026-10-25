@@ -43,6 +43,11 @@ CORE_REQUIRED = [
 ]
 
 PROFILE_REQUIRED = {
+    "pebble-watchapp": [
+        "Makefile", "watchapp/package.json", "watchapp/wscript",
+        "watchapp/src/c/model.c", "watchapp/src/c/main.c",
+        "watchapp/src/pkjs/index.js", "execution/build.py", "tests/model_test.c",
+    ],
     "dashboard-static": [
         "index.html", "style.css", "src", "data", "prod", "DEPLOY.md",
     ],
@@ -206,7 +211,8 @@ def check_knowledge() -> None:
     if index.exists():
         index_content = index.read_text()
         has_entries = any(
-            line.strip().startswith("- [") and "gitkeep" not in line
+            (line.strip().startswith("- [") or line.strip().startswith("| ["))
+            and "gitkeep" not in line
             for line in index_content.splitlines()
         )
         check("knowledge/INDEX.md has entries", has_entries,
@@ -222,7 +228,7 @@ def check_tasks() -> None:
         check("task.md exists", False)
         return
     content = task_md.read_text()
-    is_template = "pickleballkeeper" in content or "[Objective Name]" in content
+    is_template = "Define the first real milestone" in content or "[Objective Name]" in content
     check("task.md has been updated from template", not is_template,
           "still using placeholder text" if is_template else "", warning=True)
 
@@ -230,6 +236,10 @@ def check_tasks() -> None:
 # ── Execution scripts (for profiles that have them) ───────────────────────────
 
 def check_execution(profile: str) -> None:
+    if profile == "pebble-watchapp":
+        section("Execution Scripts")
+        check("Pebble build wrapper exists", (ROOT / "execution/build.py").is_file())
+        return
     if profile not in ("workflow-python", "hybrid-geospatial"):
         return
 
@@ -271,6 +281,12 @@ def check_execution(profile: str) -> None:
 # ── Tests ─────────────────────────────────────────────────────────────────────
 
 def check_tests(profile: str) -> None:
+    if profile == "pebble-watchapp":
+        section("Tests")
+        result = subprocess.run(["make", "test"], cwd=ROOT, capture_output=True, text=True)
+        check("Native host tests pass", result.returncode == 0,
+              result.stderr.strip() if result.returncode else "")
+        return
     tests_dir = ROOT / "tests"
     if not tests_dir.exists():
         return
@@ -314,7 +330,8 @@ def main() -> None:
         sys.exit(1)
 
     profile_data = json.loads(profile_path.read_text())
-    profile = profile_data.get("profile", "unknown")
+    profile = ("pebble-watchapp" if profile_data.get("runtime") == "pebble-c"
+               else profile_data.get("profile", "unknown"))
 
     print(f"\n{'='*52}")
     print(f"  Health Check: {ROOT.name} ({profile})")

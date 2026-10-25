@@ -1,0 +1,19 @@
+{
+  "name": "pickleballkeeper",
+  "author": "Daniel Bally",
+  "version": "0.1.0",
+  "keywords": ["pebble-app"],
+  "private": true,
+  "dependencies": {},
+  "pebble": {
+    "displayName": "PickleballKeeper",
+    "uuid": "6ba1de5c-79e4-4937-a6b3-40e74b9a2d68",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": ["emery"],
+    "watchapp": { "watchface": false },
+    "capabilities": ["location"],
+    "messageKeys": ["LOC_REQUEST", "LOC_SLOT", "LOC_MATCH_ID", "LOC_LAT_E6", "LOC_LON_E6", "LOC_ACCURACY_M", "LOC_STATUS"],
+    "resources": { "media": [] }
+  }
+}
