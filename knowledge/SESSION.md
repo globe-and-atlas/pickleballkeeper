@@ -21,5 +21,9 @@
 
 The 2026-10-24 build added side-out, USA 2026 rally, and school-style freeze modes; saved match history; calendar; optional GPS; relative location plot; and an independent UUID. Host tests and Emery replay validated scoring and a saved 2–0 match. An independent implementation review caught and resolved the doubles service court, lost-game label, calendar month selection, and GPS callback identity errors.
 
+## Checkpoint Log
+
+- 2026-10-25 07:35 — commit: feat: release PickleballKeeper 0.1.0 | AGENTS.md,Makefile,README.md,directives/build_watchapp.md,directives/loop_parallel.md
+
 S.D.G.: Gives pickleball players a public wrist scorer that handles serve transitions and saves results with minimal input.
 Feynman gap: Emulator and host evidence do not yet establish physical-watch touch behavior or the real paired-phone GPS permission flow.
